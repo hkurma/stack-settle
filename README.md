@@ -1,36 +1,163 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🃏 StackSettle
 
-## Getting Started
+A modern web application for home poker games that tracks multiple buy-ins and cash-outs per player and, at game end, computes the minimum number of transfers required to settle balances between players.
 
-First, run the development server:
+![StackSettle Home Screen](/images/screenshot1.png)
 
+## ✨ Features
+
+- **Multi-Game Support** - Run multiple poker games simultaneously and switch between them
+- **Player Management** - Add/remove players with ease
+- **Transaction Tracking** - Record buy-ins and cash-outs with timestamps
+- **Live Balances** - See real-time per-player totals (buy-ins, cash-outs, net balance)
+- **Smart Settlement** - Greedy algorithm minimizes the number of transfers needed
+- **Game Statistics** - View duration, transaction count, biggest winner/loser
+- **Dark/Light Mode** - Beautiful poker-themed UI in both modes
+- **Local Persistence** - All data saved to localStorage
+- **Mobile-Friendly** - Responsive design works on all devices
+
+## 📸 Screenshots
+
+### Home Screen
+Create new games or continue existing ones.
+
+![Home Screen](/images/screenshot1.png)
+
+### Active Game
+Track buy-ins and cash-outs for each player in real-time.
+
+![Active Game](/images/screenshot2.png)
+
+### Add Transaction
+Quick amount buttons for easy transaction entry.
+
+![Add Transaction](/images/screenshot3.png)
+
+### Settlement Screen
+View game stats and minimal settlement transfers.
+
+![Settlement Screen](/images/screenshot4.png)
+
+### Final Standings
+See the complete leaderboard with winner/loser rankings.
+
+![Final Standings](/images/screenshot5.png)
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+ 
+- npm, yarn, pnpm, or bun
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourusername/stack-settle.git
+cd stack-settle
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Run the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Learn More
+## 🧠 How Settlement Works
 
-To learn more about Next.js, take a look at the following resources:
+StackSettle uses a **greedy debt-settlement algorithm** to minimize the number of transfers:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Calculate each player's net balance (cash-outs - buy-ins)
+2. Build lists of creditors (positive balance) and debtors (negative balance)
+3. Sort both lists by amount (descending)
+4. Match debtors to creditors greedily, each transfer eliminating at least one balance
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Example
 
-## Deploy on Vercel
+**Input:**
+- Alice: Buy-in $100, Cash-out $180 → Net: +$80
+- Bob: Buy-in $200, Cash-out $120 → Net: -$80  
+- Charlie: Buy-in $50, Cash-out $50 → Net: $0
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Settlement Output:**
+```
+Bob → Alice: $80
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Only 1 transfer needed instead of multiple!
+
+## 🛠️ Tech Stack
+
+- **Framework:** Next.js 15 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS v4
+- **State Management:** React Context + useReducer
+- **Persistence:** localStorage
+- **Testing:** Jest
+
+## 📁 Project Structure
+
+```
+stack-settle/
+├── app/
+│   ├── globals.css      # Global styles & Tailwind config
+│   ├── layout.tsx       # Root layout with ThemeProvider
+│   └── page.tsx         # Main page component
+├── components/
+│   ├── ActiveGame.tsx   # Active game screen
+│   ├── HomeScreen.tsx   # Home/landing screen
+│   ├── SettlementScreen.tsx  # Final settlement view
+│   └── StackSettleApp.tsx    # Main app orchestrator
+├── lib/
+│   ├── GameContext.tsx  # Global state management
+│   ├── ThemeContext.tsx # Dark/light mode
+│   ├── settlement.ts    # Core settlement algorithm
+│   ├── settlement.test.ts # Unit tests
+│   ├── storage.ts       # localStorage helpers
+│   └── types.ts         # TypeScript interfaces
+└── public/
+    └── images/          # Screenshots
+```
+
+## 🧪 Running Tests
+
+```bash
+npm test
+```
+
+All 18 tests cover:
+- Balance calculations
+- Settlement algorithm
+- Currency parsing/formatting
+- Edge cases (zero balances, single player, etc.)
+
+## 📱 Mobile Support
+
+StackSettle is designed mobile-first with:
+- Touch-friendly buttons
+- Responsive layouts
+- Native-like animations
+- PWA-ready structure
+
+## 🎨 Theming
+
+Toggle between dark and light modes with the sun/moon button. The poker theme includes:
+- Gold accent colors
+- Card suit decorations
+- Smooth animations
+- Frosted glass effects
+
+## 📄 License
+
+MIT License - feel free to use for your home games!
+
+---
+
+Built with ♠️ ♥️ ♦️ ♣️ for poker nights everywhere.
