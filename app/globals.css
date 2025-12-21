@@ -1,26 +1,354 @@
 @import "tailwindcss";
 
+/* CSS Variables for theming */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf9f7;
+  --foreground: #1a1a1a;
+  --card-bg: #ffffff;
+  --card-border: #e5e5e5;
+  --felt-green: #1a472a;
+  --felt-green-light: #2d5a3d;
+  --gold: #d4af37;
+  --gold-light: #f4d03f;
+  --chip-red: #dc2626;
+  --chip-blue: #2563eb;
+  --chip-black: #18181b;
+}
+
+.dark {
+  --background: #0c0c0c;
+  --foreground: #fafafa;
+  --card-bg: rgba(26, 26, 26, 0.8);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --felt-green: #0d2818;
+  --felt-green-light: #1a472a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-outfit), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light dark;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+html.light {
+  color-scheme: light;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* Poker felt background */
+.dark body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+      ellipse 80% 50% at 50% -20%,
+      rgba(26, 71, 42, 0.4) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 50% 120%,
+      rgba(212, 175, 55, 0.1) 0%,
+      transparent 50%
+    ),
+    linear-gradient(180deg, #0c0c0c 0%, #111111 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.light body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+      ellipse 100% 80% at 50% -30%,
+      rgba(26, 71, 42, 0.15) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 80% 50% at 50% 120%,
+      rgba(212, 175, 55, 0.08) 0%,
+      transparent 50%
+    ),
+    linear-gradient(180deg, #faf9f7 0%, #f5f4f2 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--card-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background: rgba(212, 175, 55, 0.3);
+  color: inherit;
+}
+
+/* Number input - hide spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.5);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes cardFlip {
+  0% {
+    transform: rotateY(0);
+  }
+  50% {
+    transform: rotateY(90deg);
+  }
+  100% {
+    transform: rotateY(0);
+  }
+}
+
+@keyframes chipStack {
+  0% {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out forwards;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(212, 175, 55, 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-chip-stack {
+  animation: chipStack 0.3s ease-out forwards;
+}
+
+/* Stagger children animations */
+.stagger-children > * {
+  animation: fadeIn 0.4s ease-out forwards;
+  opacity: 0;
+}
+
+.stagger-children > *:nth-child(1) {
+  animation-delay: 0ms;
+}
+.stagger-children > *:nth-child(2) {
+  animation-delay: 50ms;
+}
+.stagger-children > *:nth-child(3) {
+  animation-delay: 100ms;
+}
+.stagger-children > *:nth-child(4) {
+  animation-delay: 150ms;
+}
+.stagger-children > *:nth-child(5) {
+  animation-delay: 200ms;
+}
+.stagger-children > *:nth-child(6) {
+  animation-delay: 250ms;
+}
+.stagger-children > *:nth-child(7) {
+  animation-delay: 300ms;
+}
+.stagger-children > *:nth-child(8) {
+  animation-delay: 350ms;
+}
+
+/* Glass morphism */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .glass {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Poker chip styles */
+.chip {
+  position: relative;
+  border-radius: 50%;
+  border: 3px dashed rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.2),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Card hover effect */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.dark .card-hover:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Button press effect */
+.btn-press {
+  transition: all 0.15s ease;
+}
+
+.btn-press:active {
+  transform: scale(0.97);
+}
+
+/* Gold gradient text */
+.gold-text {
+  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Mobile-friendly touch targets */
+@media (pointer: coarse) {
+  button,
+  a,
+  input {
+    min-height: 44px;
+  }
+}
+
+/* Smooth page transitions */
+.page-transition {
+  animation: fadeIn 0.3s ease-out;
 }
