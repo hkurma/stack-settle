@@ -104,6 +104,13 @@ export function Landing() {
                 </span>
               </span>
             </button>
+            <p
+              className={`mt-4 text-sm ${
+                isDark ? "text-zinc-500" : "text-zinc-500"
+              }`}
+            >
+              No signup required • Works offline • Free forever
+            </p>
           </div>
         </div>
       </section>
