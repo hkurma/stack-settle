@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { JetBrains_Mono, Outfit } from "next/font/google";
 import { Providers } from "@/components/Providers";
 import { APP_NAME, APP_TAGLINE, APP_DESCRIPTION } from "@/lib/constants";
@@ -73,6 +74,7 @@ export default function RootLayout({
         className={`${outfit.variable} ${jetbrainsMono.variable} antialiased font-sans`}
       >
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );
