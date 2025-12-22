@@ -103,20 +103,12 @@ export function SettlementScreen() {
             </div>
           </div>
           <h2
-            className={`text-3xl font-black mt-4 mb-2 ${
+            className={`text-3xl font-black mt-4 ${
               isDark ? "text-white" : "text-zinc-900"
             }`}
           >
             Game Over!
           </h2>
-          <p
-            className={`text-lg ${isDark ? "text-zinc-400" : "text-zinc-600"}`}
-          >
-            <span className="font-semibold text-amber-500">
-              {formatCurrency(totalPot)}
-            </span>{" "}
-            pot • {game.players.length} players
-          </p>
         </div>
 
         {/* Game Stats */}
@@ -127,73 +119,101 @@ export function SettlementScreen() {
           <h3 className="text-lg font-bold gold-text flex items-center gap-2 mb-4">
             <span>📊</span> Game Stats
           </h3>
-          <div className="grid grid-cols-2 gap-4">
-            <div
-              className={`rounded-xl p-4 border ${
-                isDark ? "bg-zinc-800/50 border-zinc-700" : "bg-zinc-50 border-zinc-200"
-              }`}
-            >
-              <p className="text-xs text-zinc-500 mb-1">Duration</p>
-              <p
-                className={`font-bold ${
-                  isDark ? "text-white" : "text-zinc-900"
+          <div className="space-y-4">
+            {/* Row 1: Players, Duration, Total Pot */}
+            <div className="grid grid-cols-3 gap-4">
+              <div
+                className={`rounded-xl p-4 border ${
+                  isDark
+                    ? "bg-zinc-800/50 border-zinc-700"
+                    : "bg-zinc-50 border-zinc-200"
                 }`}
               >
-                {game.endedAt
-                  ? formatDuration(game.endedAt - game.createdAt)
-                  : "N/A"}
-              </p>
-            </div>
-            <div
-              className={`rounded-xl p-4 border ${
-                isDark ? "bg-zinc-800/50 border-zinc-700" : "bg-zinc-50 border-zinc-200"
-              }`}
-            >
-              <p className="text-xs text-zinc-500 mb-1">Transactions</p>
-              <p
-                className={`font-bold ${
-                  isDark ? "text-white" : "text-zinc-900"
+                <p className="text-xs text-zinc-500 mb-1">Players</p>
+                <p
+                  className={`font-bold ${
+                    isDark ? "text-white" : "text-zinc-900"
+                  }`}
+                >
+                  {game.players.length}
+                </p>
+              </div>
+              <div
+                className={`rounded-xl p-4 border ${
+                  isDark
+                    ? "bg-zinc-800/50 border-zinc-700"
+                    : "bg-zinc-50 border-zinc-200"
                 }`}
               >
-                {game.transactions.length}
-              </p>
-            </div>
-            <div
-              className={`rounded-xl p-4 border ${
-                isDark ? "bg-zinc-800/50 border-zinc-700" : "bg-zinc-50 border-zinc-200"
-              }`}
-            >
-              <p className="text-xs text-zinc-500 mb-1">Biggest Winner</p>
-              <p className="font-bold text-emerald-500">
-                {sortedBalances[0]?.netBalanceCents > 0
-                  ? `${sortedBalances[0].playerName}`
-                  : "—"}
-              </p>
-              {sortedBalances[0]?.netBalanceCents > 0 && (
-                <p className="text-xs text-emerald-500/70">
-                  +{formatCurrency(sortedBalances[0].netBalanceCents)}
+                <p className="text-xs text-zinc-500 mb-1">Duration</p>
+                <p
+                  className={`font-bold ${
+                    isDark ? "text-white" : "text-zinc-900"
+                  }`}
+                >
+                  {game.endedAt
+                    ? formatDuration(game.endedAt - game.createdAt)
+                    : "N/A"}
                 </p>
-              )}
-            </div>
-            <div
-              className={`rounded-xl p-4 border ${
-                isDark ? "bg-zinc-800/50 border-zinc-700" : "bg-zinc-50 border-zinc-200"
-              }`}
-            >
-              <p className="text-xs text-zinc-500 mb-1">Biggest Loser</p>
-              <p className="font-bold text-red-500">
-                {sortedBalances[sortedBalances.length - 1]?.netBalanceCents < 0
-                  ? `${sortedBalances[sortedBalances.length - 1].playerName}`
-                  : "—"}
-              </p>
-              {sortedBalances[sortedBalances.length - 1]?.netBalanceCents <
-                0 && (
-                <p className="text-xs text-red-500/70">
-                  {formatCurrency(
-                    sortedBalances[sortedBalances.length - 1].netBalanceCents
-                  )}
+              </div>
+              <div
+                className={`rounded-xl p-4 border ${
+                  isDark
+                    ? "bg-zinc-800/50 border-zinc-700"
+                    : "bg-zinc-50 border-zinc-200"
+                }`}
+              >
+                <p className="text-xs text-zinc-500 mb-1">Total Pot</p>
+                <p className="font-bold text-amber-500">
+                  {formatCurrency(totalPot)}
                 </p>
-              )}
+              </div>
+            </div>
+
+            {/* Row 2: Biggest Winner, Biggest Loser */}
+            <div className="grid grid-cols-2 gap-4">
+              <div
+                className={`rounded-xl p-4 border ${
+                  isDark
+                    ? "bg-zinc-800/50 border-zinc-700"
+                    : "bg-zinc-50 border-zinc-200"
+                }`}
+              >
+                <p className="text-xs text-zinc-500 mb-1">Biggest Winner</p>
+                <p className="font-bold text-emerald-500 truncate">
+                  {sortedBalances[0]?.netBalanceCents > 0
+                    ? `${sortedBalances[0].playerName}`
+                    : "—"}
+                </p>
+                {sortedBalances[0]?.netBalanceCents > 0 && (
+                  <p className="text-xs text-emerald-500/70">
+                    +{formatCurrency(sortedBalances[0].netBalanceCents)}
+                  </p>
+                )}
+              </div>
+              <div
+                className={`rounded-xl p-4 border ${
+                  isDark
+                    ? "bg-zinc-800/50 border-zinc-700"
+                    : "bg-zinc-50 border-zinc-200"
+                }`}
+              >
+                <p className="text-xs text-zinc-500 mb-1">Biggest Loser</p>
+                <p className="font-bold text-red-500 truncate">
+                  {sortedBalances[sortedBalances.length - 1]?.netBalanceCents <
+                  0
+                    ? `${sortedBalances[sortedBalances.length - 1].playerName}`
+                    : "—"}
+                </p>
+                {sortedBalances[sortedBalances.length - 1]?.netBalanceCents <
+                  0 && (
+                  <p className="text-xs text-red-500/70">
+                    {formatCurrency(
+                      sortedBalances[sortedBalances.length - 1].netBalanceCents
+                    )}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -229,11 +249,11 @@ export function SettlementScreen() {
                       : "bg-gradient-to-r from-amber-50 via-yellow-50 to-amber-50 border-amber-200"
                   }`}
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      {/* From Avatar */}
+                  <div className="flex items-center justify-between gap-2">
+                    {/* From Player */}
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
                       <div
-                        className={`w-10 h-10 rounded-xl bg-gradient-to-br ${getPlayerColor(
+                        className={`w-10 h-10 flex-shrink-0 rounded-xl bg-gradient-to-br ${getPlayerColor(
                           settlement.from
                         )} flex items-center justify-center shadow-lg`}
                       >
@@ -241,25 +261,34 @@ export function SettlementScreen() {
                           {settlement.from[0].toUpperCase()}
                         </span>
                       </div>
+                      <span
+                        className={`font-medium truncate ${
+                          isDark ? "text-white" : "text-zinc-900"
+                        }`}
+                      >
+                        {settlement.from}
+                      </span>
+                    </div>
 
-                      {/* Arrow */}
-                      <div className="flex items-center gap-1">
-                        <div
-                          className={`w-8 h-0.5 ${
-                            isDark ? "bg-amber-500/30" : "bg-amber-300"
-                          }`}
-                        />
-                        <span className="text-amber-500">→</span>
-                        <div
-                          className={`w-8 h-0.5 ${
-                            isDark ? "bg-amber-500/30" : "bg-amber-300"
-                          }`}
-                        />
+                    {/* Arrow & Amount */}
+                    <div className="flex flex-col items-center flex-shrink-0 px-2">
+                      <div className="text-lg font-bold gold-text">
+                        {formatCurrency(settlement.amountCents)}
                       </div>
+                      <span className="text-amber-500 text-lg">→</span>
+                    </div>
 
-                      {/* To Avatar */}
+                    {/* To Player */}
+                    <div className="flex items-center gap-2 min-w-0 flex-1 justify-end">
+                      <span
+                        className={`font-medium truncate text-right ${
+                          isDark ? "text-white" : "text-zinc-900"
+                        }`}
+                      >
+                        {settlement.to}
+                      </span>
                       <div
-                        className={`w-10 h-10 rounded-xl bg-gradient-to-br ${getPlayerColor(
+                        className={`w-10 h-10 flex-shrink-0 rounded-xl bg-gradient-to-br ${getPlayerColor(
                           settlement.to
                         )} flex items-center justify-center shadow-lg`}
                       >
@@ -267,21 +296,6 @@ export function SettlementScreen() {
                           {settlement.to[0].toUpperCase()}
                         </span>
                       </div>
-
-                      {/* Names */}
-                      <div className="ml-2">
-                        <p
-                          className={`font-medium text-sm ${
-                            isDark ? "text-white" : "text-zinc-900"
-                          }`}
-                        >
-                          {settlement.from} → {settlement.to}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="text-xl font-bold gold-text">
-                      {formatCurrency(settlement.amountCents)}
                     </div>
                   </div>
                 </div>
