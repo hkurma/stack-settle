@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useGame } from "@/lib/GameContext";
 import { useTheme } from "@/lib/ThemeContext";
 import { formatCurrency } from "@/lib/settlement";
 
 export function HomeScreen() {
-  const { state, createGame, loadGame, deleteGame } = useGame();
+  const router = useRouter();
+  const { state, createGame, deleteGame } = useGame();
   const { theme, toggleTheme } = useTheme();
   const [gameName, setGameName] = useState("");
   const [showCurrentGames, setShowCurrentGames] = useState(true);
@@ -15,8 +17,17 @@ export function HomeScreen() {
   const handleCreateGame = (e: React.FormEvent) => {
     e.preventDefault();
     if (gameName.trim()) {
-      createGame(gameName.trim());
+      const gameId = createGame(gameName.trim());
       setGameName("");
+      router.push(`/${gameId}/game`);
+    }
+  };
+
+  const handleOpenGame = (gameId: string, status: "ACTIVE" | "ENDED") => {
+    if (status === "ENDED") {
+      router.push(`/${gameId}/settlement`);
+    } else {
+      router.push(`/${gameId}/game`);
     }
   };
 
@@ -179,7 +190,7 @@ export function HomeScreen() {
                     </div>
                     <div className="flex gap-2">
                       <button
-                        onClick={() => loadGame(game.id)}
+                        onClick={() => handleOpenGame(game.id, game.status)}
                         className="flex-1 py-2.5 text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl transition-all btn-press shadow-lg shadow-emerald-500/25"
                       >
                         Continue
@@ -257,7 +268,7 @@ export function HomeScreen() {
                     </div>
                     <div className="flex gap-2">
                       <button
-                        onClick={() => loadGame(game.id)}
+                        onClick={() => handleOpenGame(game.id, game.status)}
                         className={`px-3 py-1.5 text-sm rounded-lg transition-all btn-press ${
                           isDark
                             ? "bg-zinc-800 hover:bg-zinc-700 text-zinc-300"

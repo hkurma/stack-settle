@@ -1,8 +1,25 @@
 "use client";
 
-import React, { createContext, useContext, useReducer, useEffect, useCallback } from "react";
-import type { Game, Player, Transaction, PlayerBalance, Settlement } from "./types";
-import { generateId, calculatePlayerBalances, settleBalances, validateGameBalance } from "./settlement";
+import React, {
+  createContext,
+  useContext,
+  useReducer,
+  useEffect,
+  useCallback,
+} from "react";
+import type {
+  Game,
+  Player,
+  Transaction,
+  PlayerBalance,
+  Settlement,
+} from "./types";
+import {
+  generateId,
+  calculatePlayerBalances,
+  settleBalances,
+  validateGameBalance,
+} from "./settlement";
 import { getGames, saveGame, deleteGame as removeGame } from "./storage";
 
 // App state includes current game and game history
@@ -15,11 +32,16 @@ interface AppState {
 // Actions for the reducer
 type Action =
   | { type: "LOAD_STATE"; games: Game[] }
-  | { type: "CREATE_GAME"; name: string }
+  | { type: "CREATE_GAME"; game: Game }
   | { type: "LOAD_GAME"; gameId: string }
   | { type: "ADD_PLAYER"; name: string }
   | { type: "REMOVE_PLAYER"; playerId: string }
-  | { type: "ADD_TRANSACTION"; playerId: string; amountCents: number; txType: "BUY_IN" | "CASH_OUT" }
+  | {
+      type: "ADD_TRANSACTION";
+      playerId: string;
+      amountCents: number;
+      txType: "BUY_IN" | "CASH_OUT";
+    }
   | { type: "REMOVE_TRANSACTION"; transactionId: string }
   | { type: "END_GAME" }
   | { type: "DELETE_GAME"; gameId: string }
@@ -28,18 +50,28 @@ type Action =
 // Context value type
 interface GameContextValue {
   state: AppState;
-  createGame: (name: string) => void;
+  createGame: (name: string) => string; // Returns game ID
   loadGame: (gameId: string) => void;
   addPlayer: (name: string) => void;
   removePlayer: (playerId: string) => void;
-  addTransaction: (playerId: string, amountCents: number, type: "BUY_IN" | "CASH_OUT") => void;
+  addTransaction: (
+    playerId: string,
+    amountCents: number,
+    type: "BUY_IN" | "CASH_OUT"
+  ) => void;
   removeTransaction: (transactionId: string) => void;
   endGame: () => void;
   deleteGame: (gameId: string) => void;
   backToHome: () => void;
   getPlayerBalances: () => PlayerBalance[];
   getSettlements: () => Settlement[];
-  validateBalance: () => { isValid: boolean; totalBuyIns: number; totalCashOuts: number; difference: number };
+  getGameById: (gameId: string) => Game | undefined;
+  validateBalance: () => {
+    isValid: boolean;
+    totalBuyIns: number;
+    totalCashOuts: number;
+    difference: number;
+  };
 }
 
 const initialState: AppState = {
@@ -60,18 +92,10 @@ function gameReducer(state: AppState, action: Action): AppState {
     }
 
     case "CREATE_GAME": {
-      const newGame: Game = {
-        id: generateId(),
-        name: action.name,
-        status: "ACTIVE",
-        players: [],
-        transactions: [],
-        createdAt: Date.now(),
-      };
       return {
         ...state,
-        currentGame: newGame,
-        gameHistory: [...state.gameHistory, newGame],
+        currentGame: action.game,
+        gameHistory: [...state.gameHistory, action.game],
       };
     }
 
@@ -112,7 +136,9 @@ function gameReducer(state: AppState, action: Action): AppState {
 
       const updatedGame = {
         ...state.currentGame,
-        players: state.currentGame.players.filter((p) => p.id !== action.playerId),
+        players: state.currentGame.players.filter(
+          (p) => p.id !== action.playerId
+        ),
       };
       return {
         ...state,
@@ -179,10 +205,13 @@ function gameReducer(state: AppState, action: Action): AppState {
     }
 
     case "DELETE_GAME": {
-      const gameHistory = state.gameHistory.filter((g) => g.id !== action.gameId);
+      const gameHistory = state.gameHistory.filter(
+        (g) => g.id !== action.gameId
+      );
       return {
         ...state,
-        currentGame: state.currentGame?.id === action.gameId ? null : state.currentGame,
+        currentGame:
+          state.currentGame?.id === action.gameId ? null : state.currentGame,
         gameHistory,
       };
     }
@@ -217,8 +246,18 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }
   }, [state.currentGame, state.isLoading]);
 
-  const createGame = useCallback((name: string) => {
-    dispatch({ type: "CREATE_GAME", name });
+  const createGame = useCallback((name: string): string => {
+    const gameId = generateId();
+    const newGame: Game = {
+      id: gameId,
+      name,
+      status: "ACTIVE",
+      players: [],
+      transactions: [],
+      createdAt: Date.now(),
+    };
+    dispatch({ type: "CREATE_GAME", game: newGame });
+    return gameId;
   }, []);
 
   const loadGame = useCallback((gameId: string) => {
@@ -235,7 +274,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const addTransaction = useCallback(
     (playerId: string, amountCents: number, type: "BUY_IN" | "CASH_OUT") => {
-      dispatch({ type: "ADD_TRANSACTION", playerId, amountCents, txType: type });
+      dispatch({
+        type: "ADD_TRANSACTION",
+        playerId,
+        amountCents,
+        txType: type,
+      });
     },
     []
   );
@@ -259,7 +303,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const getPlayerBalances = useCallback((): PlayerBalance[] => {
     if (!state.currentGame) return [];
-    return calculatePlayerBalances(state.currentGame.players, state.currentGame.transactions);
+    return calculatePlayerBalances(
+      state.currentGame.players,
+      state.currentGame.transactions
+    );
   }, [state.currentGame]);
 
   const getSettlements = useCallback((): Settlement[] => {
@@ -271,6 +318,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     const balances = getPlayerBalances();
     return validateGameBalance(balances);
   }, [getPlayerBalances]);
+
+  const getGameById = useCallback(
+    (gameId: string): Game | undefined => {
+      return state.gameHistory.find((g) => g.id === gameId);
+    },
+    [state.gameHistory]
+  );
 
   const value: GameContextValue = {
     state,
@@ -285,6 +339,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     backToHome,
     getPlayerBalances,
     getSettlements,
+    getGameById,
     validateBalance,
   };
 
@@ -298,4 +353,3 @@ export function useGame(): GameContextValue {
   }
   return context;
 }
-

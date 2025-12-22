@@ -1,15 +1,7 @@
 "use client";
 
-import { GameProvider } from "@/lib/GameContext";
-import { ThemeProvider } from "@/lib/ThemeContext";
-import { StackSettleApp } from "@/components/StackSettleApp";
+import { HomeScreen } from "@/components/HomeScreen";
 
 export default function Home() {
-  return (
-    <ThemeProvider>
-      <GameProvider>
-        <StackSettleApp />
-      </GameProvider>
-    </ThemeProvider>
-  );
+  return <HomeScreen />;
 }

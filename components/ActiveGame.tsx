@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useGame } from "@/lib/GameContext";
 import { useTheme } from "@/lib/ThemeContext";
 import { formatCurrency, parseToCents } from "@/lib/settlement";
 
 export function ActiveGame() {
+  const router = useRouter();
   const {
     state,
     addPlayer,
@@ -13,7 +15,6 @@ export function ActiveGame() {
     addTransaction,
     removeTransaction,
     endGame,
-    backToHome,
     getPlayerBalances,
     validateBalance,
   } = useGame();
@@ -61,8 +62,9 @@ export function ActiveGame() {
   };
 
   const handleEndGame = () => {
-    if (validation.isValid) {
+    if (validation.isValid && game) {
       endGame();
+      router.push(`/${game.id}/settlement`);
     }
   };
 
@@ -119,7 +121,7 @@ export function ActiveGame() {
       >
         <div className="max-w-2xl mx-auto flex items-center justify-between px-4 py-2 ">
           <button
-            onClick={backToHome}
+            onClick={() => router.push("/")}
             className="flex items-center gap-1 group w-[120px]"
           >
             <span className="text-xl group-hover:scale-110 transition-transform">

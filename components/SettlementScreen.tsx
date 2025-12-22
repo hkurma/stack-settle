@@ -1,11 +1,13 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useGame } from "@/lib/GameContext";
 import { useTheme } from "@/lib/ThemeContext";
 import { formatCurrency } from "@/lib/settlement";
 
 export function SettlementScreen() {
-  const { state, getPlayerBalances, getSettlements, backToHome } = useGame();
+  const router = useRouter();
+  const { state, getPlayerBalances, getSettlements } = useGame();
   const { theme, toggleTheme } = useTheme();
 
   const game = state.currentGame;
@@ -52,7 +54,7 @@ export function SettlementScreen() {
       >
         <div className="max-w-2xl mx-auto flex items-center justify-between px-4 py-2">
           <button
-            onClick={backToHome}
+            onClick={() => router.push("/")}
             className="flex items-center gap-1 group w-[120px]"
           >
             <span className="text-xl group-hover:scale-110 transition-transform">
@@ -412,7 +414,7 @@ export function SettlementScreen() {
 
         {/* New Game Button */}
         <button
-          onClick={backToHome}
+          onClick={() => router.push("/")}
           className={`w-full py-4 font-bold rounded-2xl transition-all duration-300 btn-press animate-fade-in flex items-center justify-center gap-2 ${
             isDark
               ? "bg-amber-500 hover:bg-amber-400 text-black"
