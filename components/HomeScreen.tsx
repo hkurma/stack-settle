@@ -307,7 +307,7 @@ export function HomeScreen() {
           <span className="text-2xl">♣️</span>
         </div>
         <p className={`text-sm ${isDark ? "text-zinc-600" : "text-zinc-400"}`}>
-          Minimal transfers • Maximum fairness
+          Settle smarter, not harder
         </p>
       </div>
     </div>
