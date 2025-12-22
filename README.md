@@ -14,6 +14,7 @@ A modern web application for home poker games that tracks multiple buy-ins and c
 - **Game Statistics** - View duration, transaction count, biggest winner/loser
 - **Dark/Light Mode** - Beautiful poker-themed UI in both modes
 - **Local Persistence** - All data saved to localStorage
+- **Progressive Web App** - Install on your device for offline access
 - **Mobile-Friendly** - Responsive design works on all devices
 
 ## 📸 Screenshots
@@ -143,13 +144,22 @@ All 18 tests cover:
 - Currency parsing/formatting
 - Edge cases (zero balances, single player, etc.)
 
-## 📱 Mobile Support
+## 📱 Progressive Web App
 
-StackSettle is designed mobile-first with:
-- Touch-friendly buttons
-- Responsive layouts
-- Native-like animations
-- PWA-ready structure
+StackSettle is a full PWA that can be installed on any device:
+
+### Installation
+- **iOS:** Open in Safari → Tap Share → "Add to Home Screen"
+- **Android:** Open in Chrome → Tap menu → "Install app"
+- **Desktop:** Click the install icon in your browser's address bar
+
+### PWA Features
+- 📲 Install to home screen for app-like experience
+- 🔄 Works offline after first load
+- ⚡ Fast load times with caching
+- 📱 Touch-friendly buttons and gestures
+- 🎨 Native-like animations
+- 📐 Responsive layouts for all screen sizes
 
 ## 🎨 Theming
 
