@@ -136,13 +136,6 @@ export function ActiveGame() {
               </span>
             </div>
           </button>
-          <h1
-            className={`text-sm font-medium px-3 py-1 rounded-full ${
-              isDark ? "bg-zinc-800 text-zinc-300" : "bg-zinc-100 text-zinc-600"
-            }`}
-          >
-            {game.name}
-          </h1>
           <div className="w-[120px] flex justify-end">
             <button
               onClick={toggleTheme}
@@ -159,6 +152,15 @@ export function ActiveGame() {
       </header>
 
       <main className="flex-1 p-4 max-w-2xl mx-auto w-full">
+        {/* Game Name */}
+        <h1
+          className={`text-2xl font-bold text-center mb-6 animate-fade-in ${
+            isDark ? "text-white" : "text-zinc-900"
+          }`}
+        >
+          {game.name}
+        </h1>
+
         {/* Table Balance Section */}
         <div className="mb-6 animate-fade-in">
           <div className="flex items-center justify-between mb-4">
