@@ -1,11 +1,11 @@
 import type { MetadataRoute } from "next";
+import { APP_NAME, APP_TAGLINE, APP_DESCRIPTION } from "@/lib/constants";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "StackSettle - Poker Game Settlement",
-    short_name: "StackSettle",
-    description:
-      "Track buy-ins, cash-outs, and settle up with minimal transfers for your home poker games",
+    name: `${APP_NAME} - ${APP_TAGLINE}`,
+    short_name: APP_NAME,
+    description: APP_DESCRIPTION,
     start_url: "/",
     display: "standalone",
     background_color: "#18181b",

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Outfit } from "next/font/google";
 import { Providers } from "@/components/Providers";
+import { APP_NAME, APP_TAGLINE, APP_DESCRIPTION } from "@/lib/constants";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -16,9 +17,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "StackSettle | Poker Game Settlement",
-  description:
-    "Track buy-ins, cash-outs, and settle your home poker game with minimum transfers",
+  title: `${APP_NAME} | ${APP_TAGLINE}`,
+  description: APP_DESCRIPTION,
   icons: {
     icon: "/favicon.svg",
     apple: "/images/icon-192x192.png",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "StackSettle",
+    title: APP_NAME,
   },
 };
 
