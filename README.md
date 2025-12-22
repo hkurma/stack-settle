@@ -2,7 +2,7 @@
 
 A modern web application for home poker games that tracks multiple buy-ins and cash-outs per player and, at game end, computes the minimum number of transfers required to settle balances between players.
 
-![StackSettle Home Screen](/images/screenshot1.png)
+<img src="./public/images/icon-192x192.png" alt="StackSettle Icon" width="64" height="64" />
 
 ## ✨ Features
 
@@ -21,27 +21,32 @@ A modern web application for home poker games that tracks multiple buy-ins and c
 ### Home Screen
 Create new games or continue existing ones.
 
-![Home Screen](/images/screenshot1.png)
+<img src="./public/images/screenshot1.png" alt="Home Screen" width="300" />
+
+### Add Player
+Quick amount buttons for easy transaction entry.
+
+<img src="./public/images/screenshot3.png" alt="Add Player" width="300" />
 
 ### Active Game
 Track buy-ins and cash-outs for each player in real-time.
 
-![Active Game](/images/screenshot2.png)
+<img src="./public/images/screenshot2.png" alt="Active Game" width="300" />
 
 ### Add Transaction
-Quick amount buttons for easy transaction entry.
+Record buy-ins and cash-outs with quick amount buttons and custom values.
 
-![Add Transaction](/images/screenshot3.png)
+<img src="./public/images/screenshot6.png" alt="Add Transaction" width="300" />
 
-### Settlement Screen
+### End Game
 View game stats and minimal settlement transfers.
 
-![Settlement Screen](/images/screenshot4.png)
+<img src="./public/images/screenshot4.png" alt="End Game" width="300" />
 
-### Final Standings
+### Settlement Screen
 See the complete leaderboard with winner/loser rankings.
 
-![Final Standings](/images/screenshot5.png)
+<img src="./public/images/screenshot5.png" alt="Settlement Screen" width="300" />
 
 ## 🚀 Getting Started
 
