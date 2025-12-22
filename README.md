@@ -112,36 +112,41 @@ Only 1 transfer needed instead of multiple!
 
 | Route | Description |
 |-------|-------------|
-| `/` | Home screen - create new games or continue existing ones |
-| `/[id]/game` | Active game - track buy-ins and cash-outs |
-| `/[id]/settlement` | Settlement screen - view final balances and transfers |
+| `/` | Landing page - app introduction and features |
+| `/games` | Games screen - create new games or continue existing ones |
+| `/games/[id]` | Active game - track buy-ins and cash-outs |
+| `/games/[id]/settlement` | Settlement screen - view final balances and transfers |
 
 ## 📁 Project Structure
 
 ```
 stack-settle/
 ├── app/
-│   ├── [id]/
-│   │   ├── game/page.tsx      # Active game route
-│   │   └── settlement/page.tsx # Settlement route
-│   ├── globals.css            # Global styles & Tailwind config
-│   ├── layout.tsx             # Root layout with providers
-│   ├── manifest.ts            # PWA manifest
-│   └── page.tsx               # Home page
+│   ├── games/
+│   │   ├── [id]/
+│   │   │   ├── settlement/page.tsx # Settlement route
+│   │   │   └── page.tsx            # Active game route
+│   │   └── page.tsx                # Games list route
+│   ├── globals.css                 # Global styles & Tailwind config
+│   ├── layout.tsx                  # Root layout with providers
+│   ├── manifest.ts                 # PWA manifest
+│   └── page.tsx                    # Landing page
 ├── components/
-│   ├── ActiveGame.tsx         # Active game screen
-│   ├── HomeScreen.tsx         # Home/landing screen
-│   ├── Providers.tsx          # Theme & Game context providers
-│   └── SettlementScreen.tsx   # Final settlement view
+│   ├── ActiveGame.tsx              # Active game screen
+│   ├── GamesScreen.tsx             # Games management screen
+│   ├── LandingPage.tsx             # Landing page
+│   ├── Providers.tsx               # Theme & Game context providers
+│   └── SettlementScreen.tsx        # Final settlement view
 ├── lib/
-│   ├── GameContext.tsx        # Global state management
-│   ├── ThemeContext.tsx       # Dark/light mode
-│   ├── settlement.ts          # Core settlement algorithm
-│   ├── settlement.test.ts     # Unit tests
-│   ├── storage.ts             # localStorage helpers
-│   └── types.ts               # TypeScript interfaces
+│   ├── constants.ts                # Shared app constants
+│   ├── GameContext.tsx             # Global state management
+│   ├── ThemeContext.tsx            # Dark/light mode
+│   ├── settlement.ts               # Core settlement algorithm
+│   ├── settlement.test.ts          # Unit tests
+│   ├── storage.ts                  # localStorage helpers
+│   └── types.ts                    # TypeScript interfaces
 └── public/
-    └── images/                # Screenshots & icons
+    └── images/                     # Screenshots & icons
 ```
 
 ## 🧪 Running Tests

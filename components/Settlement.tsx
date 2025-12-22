@@ -5,7 +5,7 @@ import { useGame } from "@/lib/GameContext";
 import { useTheme } from "@/lib/ThemeContext";
 import { formatCurrency } from "@/lib/settlement";
 
-export function SettlementScreen() {
+export function Settlement() {
   const router = useRouter();
   const { state, getPlayerBalances, getSettlements } = useGame();
   const { theme, toggleTheme } = useTheme();
@@ -43,7 +43,26 @@ export function SettlementScreen() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col page-transition">
+    <div className="min-h-screen flex flex-col page-transition relative overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+          className={`absolute -top-24 -right-24 w-96 h-96 rounded-full blur-3xl opacity-20 ${
+            isDark ? "bg-amber-500" : "bg-amber-300"
+          }`}
+        />
+        <div
+          className={`absolute bottom-1/3 -left-32 w-80 h-80 rounded-full blur-3xl opacity-15 ${
+            isDark ? "bg-emerald-500" : "bg-emerald-300"
+          }`}
+        />
+        <div
+          className={`absolute bottom-0 right-1/4 w-72 h-72 rounded-full blur-3xl opacity-10 ${
+            isDark ? "bg-blue-500" : "bg-blue-300"
+          }`}
+        />
+      </div>
+
       {/* Header */}
       <header
         className={`sticky top-0 z-10 backdrop-blur-xl border-b ${
@@ -54,16 +73,16 @@ export function SettlementScreen() {
       >
         <div className="max-w-2xl mx-auto flex items-center justify-between px-4 py-2">
           <button
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/games")}
             className="flex items-center gap-1 group w-[120px]"
           >
-            <span className="text-xl group-hover:scale-110 transition-transform">
+            <span className="text-2xl group-hover:scale-110 transition-transform">
               🃏
             </span>
             <div>
-              <span className="gold-text font-bold">Stack</span>
+              <span className="gold-text font-bold text-2xl">Stack</span>
               <span
-                className={`font-bold ${
+                className={`font-bold text-2xl ${
                   isDark ? "text-white" : "text-zinc-800"
                 }`}
               >
@@ -257,7 +276,7 @@ export function SettlementScreen() {
                       <div
                         className={`w-10 h-10 flex-shrink-0 rounded-xl bg-gradient-to-br ${getPlayerColor(
                           settlement.from
-                        )} flex items-center justify-center shadow-lg`}
+                        )} flex items-center justify-center`}
                       >
                         <span className="text-white font-bold">
                           {settlement.from[0].toUpperCase()}
@@ -292,7 +311,7 @@ export function SettlementScreen() {
                       <div
                         className={`w-10 h-10 flex-shrink-0 rounded-xl bg-gradient-to-br ${getPlayerColor(
                           settlement.to
-                        )} flex items-center justify-center shadow-lg`}
+                        )} flex items-center justify-center`}
                       >
                         <span className="text-white font-bold">
                           {settlement.to[0].toUpperCase()}
@@ -351,7 +370,7 @@ export function SettlementScreen() {
                     <div
                       className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm ${
                         index === 0 && balance.netBalanceCents > 0
-                          ? "bg-gradient-to-br from-amber-400 to-yellow-500 text-black shadow-lg shadow-amber-500/30"
+                          ? "bg-gradient-to-br from-amber-400 to-yellow-500 text-black"
                           : index === 1 && balance.netBalanceCents > 0
                           ? "bg-gradient-to-br from-zinc-300 to-zinc-400 text-black"
                           : index === 2 && balance.netBalanceCents > 0
@@ -414,11 +433,11 @@ export function SettlementScreen() {
 
         {/* New Game Button */}
         <button
-          onClick={() => router.push("/")}
+          onClick={() => router.push("/games")}
           className={`w-full py-4 font-bold rounded-2xl transition-all duration-300 btn-press animate-fade-in flex items-center justify-center gap-2 ${
             isDark
               ? "bg-amber-500 hover:bg-amber-400 text-black"
-              : "bg-amber-500 hover:bg-amber-400 text-black shadow-lg shadow-amber-500/30"
+              : "bg-amber-500 hover:bg-amber-400 text-black hover:shadow-lg hover:shadow-amber-500/30"
           }`}
           style={{ animationDelay: "200ms" }}
         >

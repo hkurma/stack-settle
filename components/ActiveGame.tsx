@@ -64,7 +64,7 @@ export function ActiveGame() {
   const handleEndGame = () => {
     if (validation.isValid && game) {
       endGame();
-      router.push(`/${game.id}/settlement`);
+      router.push(`/games/${game.id}/settlement`);
     }
   };
 
@@ -110,7 +110,26 @@ export function ActiveGame() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col page-transition">
+    <div className="min-h-screen flex flex-col page-transition relative overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+          className={`absolute -top-24 -right-24 w-96 h-96 rounded-full blur-3xl opacity-20 ${
+            isDark ? "bg-amber-500" : "bg-amber-300"
+          }`}
+        />
+        <div
+          className={`absolute bottom-1/3 -left-32 w-80 h-80 rounded-full blur-3xl opacity-15 ${
+            isDark ? "bg-emerald-500" : "bg-emerald-300"
+          }`}
+        />
+        <div
+          className={`absolute bottom-0 right-1/4 w-72 h-72 rounded-full blur-3xl opacity-10 ${
+            isDark ? "bg-blue-500" : "bg-blue-300"
+          }`}
+        />
+      </div>
+
       {/* Header */}
       <header
         className={`sticky top-0 z-10 backdrop-blur-xl border-b ${
@@ -121,16 +140,16 @@ export function ActiveGame() {
       >
         <div className="max-w-2xl mx-auto flex items-center justify-between px-4 py-2 ">
           <button
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/games")}
             className="flex items-center gap-1 group w-[120px]"
           >
-            <span className="text-xl group-hover:scale-110 transition-transform">
+            <span className="text-2xl group-hover:scale-110 transition-transform">
               🃏
             </span>
             <div>
-              <span className="gold-text font-bold">Stack</span>
+              <span className="gold-text font-bold text-2xl">Stack</span>
               <span
-                className={`font-bold ${
+                className={`font-bold text-2xl ${
                   isDark ? "text-white" : "text-zinc-800"
                 }`}
               >
@@ -301,7 +320,7 @@ export function ActiveGame() {
                         <div
                           className={`w-12 h-12 rounded-xl bg-gradient-to-br ${getPlayerColor(
                             balance.playerName
-                          )} flex items-center justify-center shadow-lg`}
+                          )} flex items-center justify-center`}
                         >
                           <span className="text-white font-bold text-lg">
                             {balance.playerName[0].toUpperCase()}
@@ -481,7 +500,7 @@ export function ActiveGame() {
             className={`w-full py-4 font-bold rounded-2xl transition-all duration-300 btn-press animate-fade-in flex items-center justify-center gap-2 ${
               isDark
                 ? "bg-amber-500 hover:bg-amber-400 text-black"
-                : "bg-amber-500 hover:bg-amber-400 text-black shadow-lg shadow-amber-500/30"
+                : "bg-amber-500 hover:bg-amber-400 text-black hover:shadow-lg hover:shadow-amber-500/30"
             }`}
           >
             <span className="text-xl">🏆</span>
@@ -501,7 +520,7 @@ export function ActiveGame() {
             }`}
           >
             <div className="text-center mb-6">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-yellow-500 flex items-center justify-center mx-auto mb-4 shadow-xl shadow-amber-500/30">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-yellow-500 flex items-center justify-center mx-auto mb-4">
                 <span className="text-3xl">👤</span>
               </div>
               <h2
@@ -573,7 +592,7 @@ export function ActiveGame() {
           >
             <div className="text-center mb-6">
               <div
-                className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl ${
+                className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 ${
                   transactionModal.type === "BUY_IN"
                     ? "bg-gradient-to-br from-blue-500 to-blue-600 shadow-blue-500/30"
                     : "bg-gradient-to-br from-emerald-500 to-emerald-600 shadow-emerald-500/30"
@@ -687,7 +706,7 @@ export function ActiveGame() {
             }`}
           >
             <div className="text-center mb-6">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-yellow-500 flex items-center justify-center mx-auto mb-4 shadow-xl shadow-amber-500/30">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-yellow-500 flex items-center justify-center mx-auto mb-4">
                 <span className="text-3xl">🏆</span>
               </div>
               <h2

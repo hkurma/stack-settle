@@ -1,7 +1,5 @@
-"use client";
-
-import { HomeScreen } from "@/components/HomeScreen";
+import { Landing } from "@/components/Landing";
 
 export default function Home() {
-  return <HomeScreen />;
+  return <Landing />;
 }

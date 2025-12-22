@@ -3,10 +3,10 @@
 import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useGame } from "@/lib/GameContext";
-import { SettlementScreen } from "@/components/SettlementScreen";
+import { ActiveGame } from "@/components/ActiveGame";
 import { useTheme } from "@/lib/ThemeContext";
 
-export default function SettlementPage() {
+export default function GamePage() {
   const params = useParams();
   const router = useRouter();
   const { state, loadGame, getGameById } = useGame();
@@ -18,13 +18,13 @@ export default function SettlementPage() {
     if (!state.isLoading && gameId) {
       const game = getGameById(gameId);
       if (!game) {
-        // Game not found, redirect to home
-        router.replace("/");
+        // Game not found, redirect to games list
+        router.replace("/games");
         return;
       }
-      if (game.status === "ACTIVE") {
-        // Game is still active, redirect to game page
-        router.replace(`/${gameId}/game`);
+      if (game.status === "ENDED") {
+        // Game is ended, redirect to settlement
+        router.replace(`/games/${gameId}/settlement`);
         return;
       }
       // Load the game if not already loaded
@@ -62,12 +62,13 @@ export default function SettlementPage() {
         <div className="text-center">
           <div className="text-4xl animate-pulse mb-4">🃏</div>
           <p className={isDark ? "text-zinc-400" : "text-zinc-600"}>
-            Loading settlement...
+            Loading game...
           </p>
         </div>
       </div>
     );
   }
 
-  return <SettlementScreen />;
+  return <ActiveGame />;
 }
+

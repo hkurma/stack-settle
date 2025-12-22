@@ -6,7 +6,7 @@ import { useGame } from "@/lib/GameContext";
 import { useTheme } from "@/lib/ThemeContext";
 import { formatCurrency } from "@/lib/settlement";
 
-export function HomeScreen() {
+export function Games() {
   const router = useRouter();
   const { state, createGame, deleteGame } = useGame();
   const { theme, toggleTheme } = useTheme();
@@ -19,15 +19,15 @@ export function HomeScreen() {
     if (gameName.trim()) {
       const gameId = createGame(gameName.trim());
       setGameName("");
-      router.push(`/${gameId}/game`);
+      router.push(`/games/${gameId}`);
     }
   };
 
   const handleOpenGame = (gameId: string, status: "ACTIVE" | "ENDED") => {
     if (status === "ENDED") {
-      router.push(`/${gameId}/settlement`);
+      router.push(`/games/${gameId}/settlement`);
     } else {
-      router.push(`/${gameId}/game`);
+      router.push(`/games/${gameId}`);
     }
   };
 
@@ -43,7 +43,26 @@ export function HomeScreen() {
   const isDark = theme === "dark";
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 page-transition">
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 page-transition relative overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+          className={`absolute -top-24 -right-24 w-96 h-96 rounded-full blur-3xl opacity-20 ${
+            isDark ? "bg-amber-500" : "bg-amber-300"
+          }`}
+        />
+        <div
+          className={`absolute bottom-1/3 -left-32 w-80 h-80 rounded-full blur-3xl opacity-15 ${
+            isDark ? "bg-emerald-500" : "bg-emerald-300"
+          }`}
+        />
+        <div
+          className={`absolute bottom-0 right-1/4 w-72 h-72 rounded-full blur-3xl opacity-10 ${
+            isDark ? "bg-blue-500" : "bg-blue-300"
+          }`}
+        />
+      </div>
+
       {/* Theme Toggle */}
       <button
         onClick={toggleTheme}
@@ -117,7 +136,7 @@ export function HomeScreen() {
             disabled={!gameName.trim()}
             className={`w-full sm:w-auto px-6 py-3 font-semibold rounded-xl transition-all duration-300 btn-press ${
               gameName.trim()
-                ? "bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-black shadow-lg shadow-amber-500/25"
+                ? "bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-black hover:shadow-lg hover:shadow-amber-500/25"
                 : isDark
                 ? "bg-zinc-800 text-zinc-600"
                 : "bg-zinc-100 text-zinc-400"
@@ -166,7 +185,7 @@ export function HomeScreen() {
                   >
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center">
                           <span className="text-white text-lg">🎴</span>
                         </div>
                         <div>
@@ -191,7 +210,7 @@ export function HomeScreen() {
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleOpenGame(game.id, game.status)}
-                        className="flex-1 py-2.5 text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl transition-all btn-press shadow-lg shadow-emerald-500/25"
+                        className="flex-1 py-2.5 text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl transition-all btn-press hover:shadow-2xl hover:shadow-emerald-500/25"
                       >
                         Continue
                       </button>
