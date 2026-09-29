@@ -16,7 +16,7 @@ jobs:
   label:
     runs-on: ubuntu-latest
     steps:
-      - uses: hkurma/smart-labeler@v1.0.0
+      - uses: hkurma/smart-labeler@v1.0.1
         with:
           typesafe-api-key: ${{ secrets.TYPESAFE_API_KEY }}
           # threshold: "0.7"
