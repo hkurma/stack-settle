@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGame } from "@/lib/GameContext";
 import { useTheme } from "@/lib/ThemeContext";
+import { TipButton } from "@/components/TipButton";
+import { TipCard } from "@/components/TipCard";
 import { formatCurrency } from "@/lib/settlement";
 
 export function Games() {
@@ -83,18 +85,21 @@ export function Games() {
         />
       </div>
 
-      {/* Theme Toggle */}
-      <button
-        onClick={toggleTheme}
-        className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 btn-press ${
-          isDark
-            ? "bg-zinc-800/80 hover:bg-zinc-700 border border-zinc-700"
-            : "bg-white/80 hover:bg-white border border-zinc-200 shadow-sm"
-        }`}
-        title={`Switch to ${isDark ? "light" : "dark"} mode`}
-      >
-        <span className="text-lg">{isDark ? "☀️" : "🌙"}</span>
-      </button>
+      {/* Tip + Theme Toggle */}
+      <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
+        <TipButton shape="full" />
+        <button
+          onClick={toggleTheme}
+          className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 btn-press ${
+            isDark
+              ? "bg-zinc-800/80 hover:bg-zinc-700 border border-zinc-700"
+              : "bg-white/80 hover:bg-white border border-zinc-200 shadow-sm"
+          }`}
+          title={`Switch to ${isDark ? "light" : "dark"} mode`}
+        >
+          <span className="text-lg">{isDark ? "☀️" : "🌙"}</span>
+        </button>
+      </div>
 
       {/* Logo and Title */}
       <div className="text-center mb-10 animate-fade-in">
@@ -341,6 +346,13 @@ export function Games() {
           )}
         </div>
       )}
+
+      {/* Support */}
+      <TipCard
+        className="w-full max-w-md mt-8 animate-fade-in"
+        title="Enjoying StackSettle?"
+        message="It's free and ad-free. If it made settling up easier, a coffee helps keep it that way."
+      />
 
       {/* Footer */}
       <div

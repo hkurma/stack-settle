@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGame } from "@/lib/GameContext";
 import { useTheme } from "@/lib/ThemeContext";
+import { TipButton } from "@/components/TipButton";
+import { TipCard } from "@/components/TipCard";
 import { formatCurrency, parseToCents } from "@/lib/settlement";
 
 export function ActiveGame() {
@@ -157,7 +159,8 @@ export function ActiveGame() {
               </span>
             </div>
           </button>
-          <div className="w-[120px] flex justify-end">
+          <div className="w-[120px] sm:w-auto flex justify-end gap-2">
+            <TipButton />
             <button
               onClick={toggleTheme}
               className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all btn-press ${
@@ -507,6 +510,26 @@ export function ActiveGame() {
             <span>End Game & Settle Up</span>
           </button>
         )}
+
+        {/* Support */}
+        <TipCard
+          className="mt-8 animate-fade-in"
+          title="Enjoying the game?"
+          message="StackSettle is free and ad-free. If it's keeping your table's math straight, a coffee helps keep it that way."
+        />
+
+        {/* Footer */}
+        <footer className="mt-12 mb-4 text-center animate-fade-in">
+          <div className="flex items-center justify-center gap-4 mb-3">
+            <span className="text-2xl">♠️</span>
+            <span className="text-2xl">♥️</span>
+            <span className="text-2xl">♦️</span>
+            <span className="text-2xl">♣️</span>
+          </div>
+          <p className={`text-sm ${isDark ? "text-zinc-600" : "text-zinc-400"}`}>
+            Settle smarter, not harder
+          </p>
+        </footer>
       </main>
 
       {/* Add Player Modal */}

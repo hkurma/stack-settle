@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useTheme } from "@/lib/ThemeContext";
+import { TipButton } from "@/components/TipButton";
+import { TipCard } from "@/components/TipCard";
 import { APP_NAME, APP_TAGLINE } from "@/lib/constants";
 
 export function Landing() {
@@ -30,18 +32,21 @@ export function Landing() {
         />
       </div>
 
-      {/* Theme Toggle */}
-      <button
-        onClick={toggleTheme}
-        className={`fixed top-4 right-4 z-50 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 btn-press ${
-          isDark
-            ? "bg-zinc-800/80 hover:bg-zinc-700 border border-zinc-700"
-            : "bg-white/80 hover:bg-white border border-zinc-200 shadow-sm"
-        }`}
-        title={`Switch to ${isDark ? "light" : "dark"} mode`}
-      >
-        <span className="text-lg">{isDark ? "☀️" : "🌙"}</span>
-      </button>
+      {/* Tip + Theme Toggle */}
+      <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+        <TipButton shape="full" />
+        <button
+          onClick={toggleTheme}
+          className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 btn-press ${
+            isDark
+              ? "bg-zinc-800/80 hover:bg-zinc-700 border border-zinc-700"
+              : "bg-white/80 hover:bg-white border border-zinc-200 shadow-sm"
+          }`}
+          title={`Switch to ${isDark ? "light" : "dark"} mode`}
+        >
+          <span className="text-lg">{isDark ? "☀️" : "🌙"}</span>
+        </button>
+      </div>
 
       {/* Hero Section */}
       <section className="flex-1 flex flex-col items-center justify-center px-6 py-16 relative">
@@ -303,6 +308,15 @@ export function Landing() {
             No signup required • Works offline • Free forever
           </p>
         </div>
+      </section>
+
+      {/* Support */}
+      <section className="pb-12 px-6 relative z-10">
+        <TipCard
+          className="max-w-md mx-auto"
+          title="Keep StackSettle free"
+          message="No ads, no accounts, no tracking of your games. If it helps your home game, you can buy me a coffee."
+        />
       </section>
 
       {/* Footer */}
