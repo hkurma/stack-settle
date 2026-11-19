@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGame } from "@/lib/GameContext";
 import { useTheme } from "@/lib/ThemeContext";
@@ -13,6 +13,26 @@ export function Games() {
   const [gameName, setGameName] = useState("");
   const [showCurrentGames, setShowCurrentGames] = useState(true);
   const [showPastGames, setShowPastGames] = useState(false);
+  const [gameToDelete, setGameToDelete] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
+
+  useEffect(() => {
+    if (!gameToDelete) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setGameToDelete(null);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [gameToDelete]);
+
+  const handleConfirmDelete = () => {
+    if (gameToDelete) {
+      deleteGame(gameToDelete.id);
+      setGameToDelete(null);
+    }
+  };
 
   const handleCreateGame = (e: React.FormEvent) => {
     e.preventDefault();
@@ -215,14 +235,18 @@ export function Games() {
                         Continue
                       </button>
                       <button
-                        onClick={() => deleteGame(game.id)}
-                        className={`px-4 py-2.5 text-sm rounded-xl transition-all btn-press ${
+                        onClick={() =>
+                          setGameToDelete({ id: game.id, name: game.name })
+                        }
+                        aria-label={`Delete ${game.name}`}
+                        title="Delete game"
+                        className={`px-4 py-2.5 text-sm rounded-xl transition-all btn-press flex items-center justify-center border ${
                           isDark
-                            ? "bg-zinc-800 hover:bg-zinc-700 text-zinc-400"
-                            : "bg-zinc-100 hover:bg-zinc-200 text-zinc-600"
+                            ? "bg-red-500/10 hover:bg-red-500/20 text-red-400 border-red-500/20"
+                            : "bg-red-50 hover:bg-red-100 text-red-600 border-red-200"
                         }`}
                       >
-                        ✕
+                        <TrashIcon />
                       </button>
                     </div>
                   </div>
@@ -297,14 +321,18 @@ export function Games() {
                         View
                       </button>
                       <button
-                        onClick={() => deleteGame(game.id)}
-                        className={`px-3 py-1.5 text-sm rounded-lg transition-all btn-press ${
+                        onClick={() =>
+                          setGameToDelete({ id: game.id, name: game.name })
+                        }
+                        aria-label={`Delete ${game.name}`}
+                        title="Delete game"
+                        className={`px-3 py-1.5 text-sm rounded-lg transition-all btn-press flex items-center justify-center border ${
                           isDark
-                            ? "text-zinc-600 hover:text-red-400 hover:bg-red-500/10"
-                            : "text-zinc-400 hover:text-red-500 hover:bg-red-50"
+                            ? "bg-red-500/10 hover:bg-red-500/20 text-red-400 border-red-500/20"
+                            : "bg-red-50 hover:bg-red-100 text-red-600 border-red-200"
                         }`}
                       >
-                        ✕
+                        <TrashIcon />
                       </button>
                     </div>
                   </div>
@@ -329,6 +357,86 @@ export function Games() {
           Settle smarter, not harder
         </p>
       </div>
+
+      {/* Delete Game Confirmation Modal */}
+      {gameToDelete && (
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in"
+          onClick={() => setGameToDelete(null)}
+        >
+          <div
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="delete-game-title"
+            onClick={(e) => e.stopPropagation()}
+            className={`rounded-3xl p-6 w-full max-w-sm animate-scale-in border ${
+              isDark
+                ? "bg-zinc-900 border-zinc-800"
+                : "bg-white border-zinc-200"
+            }`}
+          >
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">🗑️</span>
+              </div>
+              <h2
+                id="delete-game-title"
+                className={`text-xl font-bold ${
+                  isDark ? "text-white" : "text-zinc-900"
+                }`}
+              >
+                Delete Game?
+              </h2>
+              <p className="text-sm mt-2 text-zinc-500">
+                &ldquo;{gameToDelete.name}&rdquo; and all its transactions will
+                be permanently deleted. This can&apos;t be undone.
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                autoFocus
+                onClick={() => setGameToDelete(null)}
+                className={`flex-1 py-3.5 rounded-xl font-medium transition-all btn-press ${
+                  isDark
+                    ? "bg-zinc-800 hover:bg-zinc-700 text-zinc-300"
+                    : "bg-zinc-100 hover:bg-zinc-200 text-zinc-700"
+                }`}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmDelete}
+                className="flex-1 py-3.5 rounded-xl font-semibold transition-all btn-press bg-red-500 hover:bg-red-400 text-white"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
+  );
+}
+
+function TrashIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="w-4 h-4"
+      aria-hidden="true"
+    >
+      <path d="M3 6h18" />
+      <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+      <path d="M10 11v6" />
+      <path d="M14 11v6" />
+    </svg>
   );
 }
