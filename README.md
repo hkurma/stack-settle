@@ -76,6 +76,8 @@ npm run dev
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+> The ☕ tip button in every page header, and the tip cards on the landing, games and settlement pages, link to `https://buymeacoffee.com/hkurma` by default. Set `NEXT_PUBLIC_TIP_URL` to point them elsewhere.
+
 ## 🧠 How Settlement Works
 
 StackSettle uses a **greedy debt-settlement algorithm** to minimize the number of transfers:
